@@ -5,7 +5,7 @@ const app = express(); //our server app
 const mysql = require("mysql2"); //use mysql2
 const cors = require("cors"); //allow resource sharing
 
-const db = mysql.createPool({
+const db = mysql.createPool({//database connection
   host: "localhost",
   user: "root",
   password: "root",
@@ -28,13 +28,27 @@ app.get("/api/get", (req, res) => {
 app.post("/api/insert", (req, res) => {
   const movieName = req.body.movieName;
   const movieReview = req.body.movieReview;
-
+  //^making an object to send both fields to the db
   const sqlInsert =
     "INSERT INTO movie_reviews (movieName, movieReview) VALUES (?,?)";
   db.query(sqlInsert, [movieName, movieReview], (err, result) => {
-    console.log(result);
+    console.log(result); //2 variables so use array
   });
   res.send("Hello William. This is the insert route of your backend");
+});
+
+app.delete("/api/delete/:movieName", (req, res) => {
+  const name = req.params.movieName;
+  const sqlDelete = "DELETE FROM movie_reviews WHERE movieName = ?";
+  
+  db.query(sqlDelete, name, (err, result) => {
+    console.log(name)
+    if(err) console.log(err);
+  });
+});
+
+app.get("/", (req, res) => {
+  res.send("Server main page");
 });
 
 //app.get("/", (req, res) => {//home page empty here so front end fills it

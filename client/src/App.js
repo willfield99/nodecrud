@@ -21,11 +21,16 @@ function App() {
       movieReview: review,
     });
 
-    setMovieList([//useEffect will update the state with a set method
+    setMovieList([
+      //useEffect will update the state with a set method
       ...movieReviewList,
       { movieName: movieName, movieReview: review },
     ]);
   }; //updating movie list to include the submitted element
+
+  const deleteReview = (movie) => {
+    Axios.delete("http://localhost:3001/api/delete/" + movie);
+  };
 
   return (
     <div className="App">
@@ -49,11 +54,21 @@ function App() {
           }}
         />
         <button onClick={submitReview}> Submit </button>
+
         {movieReviewList.map((val) => {
           return (
-            <h1>
-              Movie Name: {val.movieName} | Movie Review: {val.movieReview}{" "}
-            </h1>
+            <div className="card">
+              <h1>{val.movieName}</h1> <p>{val.movieReview}</p>
+              <button
+                onClick={() => {
+                  deleteReview(val.movieName);
+                }}
+              >
+                Delete
+              </button>
+              <input type="text" id="updateInput" />
+              <button> Change review</button>
+            </div>
           );
         })}
       </div>
