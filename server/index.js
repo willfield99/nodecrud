@@ -26,7 +26,7 @@ app.get("/api/get", (req, res) => {
 });
 
 app.post("/api/insert", (req, res) => {
-  const movieName = req.body.movieName;
+  const movieName = req.body.movieName;//when sending as object use body
   const movieReview = req.body.movieReview;
   //^making an object to send both fields to the db
   const sqlInsert =
@@ -38,14 +38,26 @@ app.post("/api/insert", (req, res) => {
 });
 
 app.delete("/api/delete/:movieName", (req, res) => {
-  const name = req.params.movieName;
+  const name = req.params.movieName;//when sending as template literal use params
   const sqlDelete = "DELETE FROM movie_reviews WHERE movieName = ?";
   
   db.query(sqlDelete, name, (err, result) => {
-    console.log(name)
-    if(err) console.log(err);
+    
+    err && console.log(err);
   });
 });
+
+app.put("/api/update", (req, res) => {
+  const name = req.body.movieName;
+  const review = req.body.movieReview;
+  const sqlUpdate = "UPDATE movie_reviews SET movieReview = ? WHERE movieName = ?";
+  
+  db.query(sqlUpdate, [review, name], (err, result) => {
+    console.log(name)
+    err && console.log(err);
+  });
+});
+
 
 app.get("/", (req, res) => {
   res.send("Server main page");
