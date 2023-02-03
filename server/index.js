@@ -37,9 +37,9 @@ app.post("/api/insert", (req, res) => {
   res.send("Hello William. This is the insert route of your backend");
 });
 
-app.delete("/api/delete/:movieName", (req, res) => {
-  const name = req.params.movieName;//when sending as template literal use params
-  const sqlDelete = "DELETE FROM movie_reviews WHERE movieName = ?";
+app.delete("/api/delete/:id", (req, res) => {
+  const name = req.params.id;//when sending as template literal use params
+  const sqlDelete = "DELETE FROM movie_reviews WHERE id = ?";
   
   db.query(sqlDelete, name, (err, result) => {
     
@@ -48,12 +48,12 @@ app.delete("/api/delete/:movieName", (req, res) => {
 });
 
 app.put("/api/update", (req, res) => {
-  const name = req.body.movieName;
+  const id = req.body.id;
   const review = req.body.movieReview;
-  const sqlUpdate = "UPDATE movie_reviews SET movieReview = ? WHERE movieName = ?";
+  const sqlUpdate = "UPDATE movie_reviews SET movieReview = ? WHERE id = ?";
   
-  db.query(sqlUpdate, [review, name], (err, result) => {
-    console.log(name)
+  db.query(sqlUpdate, [review, id], (err, result) => {
+    console.log(id)
     err && console.log(err);
   });
 });
